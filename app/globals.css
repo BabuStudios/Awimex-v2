@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+/* Tokens mirror content.palette — the only colours on the site. */
+@theme {
+  --color-asphalt: #0b0d10;
+  --color-graphite: #1a1e23;
+  --color-amber: #ffa41b;
+  --color-signal: #1e6bff;
+  --color-offwhite: #eef1f3;
+  --color-mist: #c9ced4;
+  --color-rim: #9fb4c8;
+
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+  /* Scrim behind overlay text: holds 4.5:1 against the brightest bloom. */
+  --scrim: linear-gradient(90deg, rgb(11 13 16 / 0.82) 0%, rgb(11 13 16 / 0.55) 45%, rgb(11 13 16 / 0) 75%);
+}
+
+html {
+  background: var(--color-asphalt);
+  color: var(--color-offwhite);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  background: var(--color-asphalt);
+  min-height: 100dvh;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+::selection {
+  background: var(--color-amber);
+  color: var(--color-asphalt);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Display type: Archivo, expanded for headlines, condensed for labels. */
+.display {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 112;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+.label {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 75;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* SplitText line masks keep descenders. */
+.split-line {
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+dialog::backdrop {
+  background: rgb(11 13 16 / 0.72);
+  backdrop-filter: blur(6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
