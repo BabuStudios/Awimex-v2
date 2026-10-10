@@ -4,7 +4,7 @@
  * content.analytics AND the visitor has consented.
  */
 
-import { analytics } from "@/content/content";
+import { analytics } from "@/content/site";
 
 export type AnalyticsEvent =
   | { name: "scene_enter"; id: string }

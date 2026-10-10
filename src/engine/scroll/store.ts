@@ -6,7 +6,7 @@
  */
 
 import { createStore, useStore } from "zustand";
-import type { Tier, Backend } from "@/engine/quality/tier";
+import type { Backend, QualityProfile, Tier } from "@/engine/quality/tier";
 
 export type EngineState = {
   /** 0..1 over the whole scroll track. */
@@ -20,7 +20,15 @@ export type EngineState = {
   /** Pointer in normalised device coordinates, -1..1. */
   pointer: { x: number; y: number };
   tier: Tier | null;
+  /** Requested backend; `activeBackend` is what WebGPURenderer actually ran on. */
   backend: Backend | null;
+  activeBackend: Backend | null;
+  profile: QualityProfile | null;
+  /**
+   * Adaptive quality step, only ever increases:
+   * 0 none · 1 DPR · 2 post FX · 3 particles · 4 drop a tier (FULL→LITE, LITE→STATIC).
+   */
+  degrade: number;
   /** 0..1 from the three.js loading manager. */
   loadProgress: number;
   /** The world has rendered its first frame. */
@@ -38,6 +46,9 @@ export const engine = createStore<EngineState>(() => ({
   pointer: { x: 0, y: 0 },
   tier: null,
   backend: null,
+  activeBackend: null,
+  profile: null,
+  degrade: 0,
   loadProgress: 0,
   worldReady: false,
   introDone: false,

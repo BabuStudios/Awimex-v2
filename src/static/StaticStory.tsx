@@ -13,6 +13,7 @@ import { areas, productFamilies, scenes, type SceneId } from "@/content/content"
 import { useI18n } from "@/lib/i18n-context";
 import { gsap, prefersReducedMotion, registerMotion } from "@/lib/motion";
 import { BliKundButton } from "@/overlay/BliKundButton";
+import { HeroCopy, SceneFrame, heroAtmosphere } from "@/overlay/HeroCopy";
 import { Card, ContactDetails, Eyebrow, PeopleDirectory, ProofCluster } from "@/overlay/blocks";
 import { Nav } from "@/overlay/Nav";
 import { SplitHeading } from "@/overlay/SplitHeading";
@@ -20,7 +21,7 @@ import { posters } from "./posters.generated";
 
 /** CSS atmospheres — the documented fallback when a scene poster is missing. */
 const atmosphere: Record<SceneId, string> = {
-  hero: "radial-gradient(ellipse 60% 40% at 66% 52%, rgb(255 164 27 / 0.28), transparent 70%), radial-gradient(ellipse 90% 60% at 50% 100%, #1a1e23, #0b0d10 70%)",
+  hero: heroAtmosphere,
   omOss: "radial-gradient(ellipse 80% 35% at 50% 85%, rgb(255 164 27 / 0.16), transparent 70%), linear-gradient(#0b0d10, #1a1e23 70%, #0b0d10)",
   produkter: "radial-gradient(circle at 20% 60%, rgb(255 164 27 / 0.14), transparent 30%), radial-gradient(circle at 80% 40%, rgb(30 107 255 / 0.12), transparent 30%), #0b0d10",
   verksamhet: "radial-gradient(ellipse 50% 40% at 25% 55%, rgb(30 107 255 / 0.2), transparent 70%), radial-gradient(ellipse 50% 40% at 78% 50%, rgb(255 164 27 / 0.18), transparent 70%), #0b0d10",
@@ -38,7 +39,7 @@ function SceneSection({ id, anchor, children }: { id: SceneId; anchor: string; c
         style={{ backgroundImage: poster ? `url(${poster.src}), ${atmosphere[id]}` : atmosphere[id] }}
       />
       <div aria-hidden="true" className="absolute inset-0 -z-10" style={{ background: "var(--scrim)" }} />
-      <div className="mx-auto flex min-h-[100svh] max-w-[1600px] flex-col justify-center px-5 py-28 sm:px-10">{children}</div>
+      <SceneFrame>{children}</SceneFrame>
     </section>
   );
 }
@@ -66,18 +67,7 @@ export function StaticStory() {
       <Nav />
 
       <SceneSection id="hero" anchor={scenes[0].anchor}>
-        <div className="max-w-3xl">
-          <Eyebrow>{s.hero.eyebrow}</Eyebrow>
-          <SplitHeading as="p" scrollTrigger className="display mt-6 text-[clamp(2.6rem,6.2vw,5.8rem)] font-extrabold">
-            {s.hero.heading}
-          </SplitHeading>
-          <p aria-hidden="true" className="mt-6 max-w-xl text-lg leading-relaxed text-mist">
-            {tr(s.hero.subhead)}
-          </p>
-          <div className="mt-10">
-            <BliKundButton id="static_hero" size="lg" />
-          </div>
-        </div>
+        <HeroCopy />
       </SceneSection>
 
       <SceneSection id="omOss" anchor={scenes[1].anchor}>

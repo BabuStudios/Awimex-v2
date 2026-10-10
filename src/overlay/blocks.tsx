@@ -11,14 +11,7 @@ import { contactGroups } from "@/content/people";
 import { useI18n } from "@/lib/i18n-context";
 import { formatFact, toTelHref } from "@/lib/format";
 
-export function Eyebrow({ children }: { children: string }) {
-  return (
-    <p aria-hidden="true" className="label flex items-center gap-3 text-amber">
-      <span className="h-px w-8 bg-amber" />
-      {children}
-    </p>
-  );
-}
+export { Eyebrow } from "./Eyebrow";
 
 export function ProofCluster() {
   const { dict, locale } = useI18n();

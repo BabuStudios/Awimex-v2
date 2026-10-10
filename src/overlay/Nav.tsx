@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { scenes } from "@/content/content";
+import { scenes } from "@/content/scenes";
 import { useI18n } from "@/lib/i18n-context";
 import { BliKundButton } from "./BliKundButton";
 import { Wordmark } from "./Wordmark";

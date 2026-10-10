@@ -6,6 +6,7 @@
 
 import Lenis from "lenis";
 import { gsap, ScrollTrigger, registerMotion } from "@/lib/motion";
+import { setScroller } from "./handle";
 import { engine } from "./store";
 import { sample, sceneStartProgress } from "./timeline";
 
@@ -47,11 +48,13 @@ export function startLenis(): Lenis {
   gsap.ticker.lagSmoothing(0);
 
   publish(lenis.progress || 0, 0);
+  setScroller(lenis);
   return lenis;
 }
 
 export function stopLenis() {
   if (tick) gsap.ticker.remove(tick);
+  setScroller(null);
   lenis?.destroy();
   lenis = null;
   tick = null;

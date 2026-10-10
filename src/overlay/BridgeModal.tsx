@@ -7,7 +7,7 @@ import { useI18n } from "@/lib/i18n-context";
 import { toTelHref } from "@/lib/format";
 import { rich } from "@/lib/rich";
 import { track } from "@/lib/analytics";
-import { getLenis } from "@/engine/scroll/lenis";
+import { pauseScroll, resumeScroll } from "@/engine/scroll/handle";
 import { useUi } from "./ui-store";
 
 /**
@@ -27,7 +27,7 @@ export function BridgeModal() {
     if (!dialog) return;
     if (open && !dialog.open) {
       dialog.showModal();
-      getLenis()?.stop();
+      pauseScroll();
     } else if (!open && dialog.open) {
       dialog.close();
     }
@@ -38,7 +38,7 @@ export function BridgeModal() {
       ref={ref}
       aria-labelledby="bridge-title"
       onClose={() => {
-        getLenis()?.start();
+        resumeScroll();
         close();
       }}
       onClick={(e) => {
