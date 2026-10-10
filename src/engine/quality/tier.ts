@@ -21,6 +21,8 @@ export type QualityProfile = {
   dof: boolean;
   bloomHalfRes: boolean;
   rain: boolean;
+  /** Set by ?tier= — QA must see the tier it asked for, so adaptive quality stays off. */
+  forced: boolean;
 };
 
 const SOFTWARE_GL = /swiftshader|llvmpipe|software|basic render/i;
@@ -43,10 +45,10 @@ function param(name: string): string | null {
   return new URLSearchParams(window.location.search).get(name);
 }
 
-export function profileFor(tier: Tier, backend: Backend): QualityProfile {
+export function profileFor(tier: Tier, backend: Backend, forced = false): QualityProfile {
   if (tier === "FULL")
-    return { tier, backend, dprMax: 2, particleScale: backend === "webgpu" ? 1 : 0.35, dof: true, bloomHalfRes: false, rain: true };
-  return { tier, backend, dprMax: 1.5, particleScale: 0.35, dof: false, bloomHalfRes: true, rain: false };
+    return { tier, backend, forced, dprMax: 2, particleScale: backend === "webgpu" ? 1 : 0.35, dof: true, bloomHalfRes: false, rain: true };
+  return { tier, backend, forced, dprMax: 1.5, particleScale: 0.35, dof: false, bloomHalfRes: true, rain: false };
 }
 
 export function detectQuality(): QualityProfile {
@@ -57,7 +59,7 @@ export function detectQuality(): QualityProfile {
   const backend: Backend = forcedBackend ?? (webgpu ? "webgpu" : "webgl");
 
   if (forcedTier === "FULL" || forcedTier === "LITE" || forcedTier === "STATIC") {
-    return profileFor(forcedTier, backend);
+    return profileFor(forcedTier, backend, true);
   }
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

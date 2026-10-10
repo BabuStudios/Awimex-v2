@@ -12,6 +12,7 @@ import { Lighting } from "./lighting/Lighting";
 import { PostFX } from "./post/PostFX";
 import { AdaptiveQuality } from "./quality/AdaptiveQuality";
 import { Scenes } from "./scenes/Scenes";
+import { Road } from "./environment/Road";
 
 /**
  * The single world. Linear fog with FOG_FAR < SCENE_SPACING guarantees only
@@ -45,6 +46,7 @@ export function World() {
       <Lighting />
       <Mist />
       <Flares />
+      <Road />
       <Scenes />
       <PostFX />
       <AdaptiveQuality />

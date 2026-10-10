@@ -38,6 +38,11 @@ export default function EngineLayer() {
     };
   }, []);
 
+  // Until the intro lands (4d), the world counts as introduced once it is ready.
+  useEffect(() => {
+    if (worldReady) engine.setState({ introDone: true });
+  }, [worldReady]);
+
   useGSAP(
     () => {
       gsap.to(hero.current, { autoAlpha: scene === 0 ? 1 : 0, duration: 0.6, ease: "babu.glide" });

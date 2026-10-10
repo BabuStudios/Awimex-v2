@@ -41,7 +41,7 @@ export function Scenes() {
             position={[0, 0, sceneZ(i)]}
           >
             {scene.inSceneWord && (
-              <InSceneWord word={dict.inScene[scene.inSceneWord]} width={34} position={[0, 7.5, -26]} />
+              <InSceneWord word={dict.inScene[scene.inSceneWord]} width={34} position={[0, 11.5, -30]} />
             )}
             {Content && <Content index={i} />}
           </group>

@@ -6,6 +6,7 @@
  * steps down one level per window: DPR → post FX → particles → tier.
  * It never steps back up mid-session (that would flicker).
  * LITE that still runs under 30 fps falls through to STATIC.
+ * A tier forced with ?tier= is left alone (QA).
  */
 
 import { useRef } from "react";
@@ -24,7 +25,7 @@ export function AdaptiveQuality() {
 
   useFrame((_, dt) => {
     const state = engine.getState();
-    if (!state.worldReady || !state.introDone || state.tier === "STATIC") return;
+    if (!state.worldReady || !state.introDone || state.tier === "STATIC" || state.profile?.forced) return;
     const a = acc.current;
     if (a.warm < WARMUP) {
       a.warm += dt;

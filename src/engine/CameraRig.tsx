@@ -14,6 +14,7 @@ import type { PerspectiveCamera } from "three";
 import { CAMERA_FOV, camera as cam } from "@/content/content";
 import { engine } from "@/engine/scroll/store";
 import { sample } from "@/engine/scroll/timeline";
+import { tickSignature } from "@/engine/signature";
 
 const clamp = (v: number, m: number) => Math.max(-m, Math.min(m, v));
 const damp = (current: number, target: number, lerp: number, dt: number) =>
@@ -27,6 +28,7 @@ export function CameraRig() {
     const camera = state.camera as PerspectiveCamera;
     const { progress, pointer, signature } = engine.getState();
     const target = sample(progress);
+    tickSignature(signature, state.clock.elapsedTime);
     const delta = Math.min(dt, 0.1);
 
     camera.position.x = damp(camera.position.x, target.x, cam.lerp, delta);

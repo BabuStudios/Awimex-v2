@@ -20,19 +20,11 @@ import { dof } from "three/addons/tsl/display/DepthOfFieldNode.js";
 import { film } from "three/addons/tsl/display/FilmNode.js";
 import { camera as cam, palette, post } from "@/content/content";
 import { engine } from "@/engine/scroll/store";
+import { strobe } from "@/engine/signature";
 import type Node from "three/src/nodes/core/Node.js";
 
 /** @types/three types the display nodes as their classes, not as vec4 nodes. */
 const v4 = (n: unknown) => n as Node<"vec4">;
-
-/** Three short flashes across the signature travel, amber → blue. */
-function strobe(t: number): { amount: number; blue: number } {
-  if (t <= 0 || t >= 1) return { amount: 0, blue: 0 };
-  const flashes = [0.18, 0.34, 0.5];
-  let amount = 0;
-  for (const f of flashes) amount = Math.max(amount, Math.exp(-Math.pow((t - f) / 0.035, 2)));
-  return { amount, blue: t > 0.3 ? 1 : 0 };
-}
 
 export function PostFX() {
   const { gl, scene, camera } = useThree();
@@ -80,17 +72,17 @@ export function PostFX() {
   const blue = useMemo(() => new THREE.Color(palette.signalBlue), []);
 
   useFrame(() => {
-    const { signature, degrade, tier } = engine.getState();
+    const { degrade, tier } = engine.getState();
     const { u } = chain;
     const reduced = degrade >= 2 || tier === "LITE";
 
     u.dofMix.value = reduced ? 0 : 1;
     u.grain.value = reduced ? 0 : post.grain;
-    const s = strobe(signature);
-    u.strobe.value = s.amount * 0.22;
+    const s = strobe();
+    u.strobe.value = s.amount * 0.07;
     u.strobeColor.value.copy(s.blue ? blue : amber);
     u.chroma.value = profile.tier === "FULL" && !reduced ? post.chromatic.idle + s.amount * post.chromatic.strobe * 150 : 0;
-    u.bloomStrength.value = post.bloom.strength * (1 + s.amount * 0.8);
+    u.bloomStrength.value = post.bloom.strength * (1 + s.amount * 0.35);
 
     chain.pipeline.render();
   }, 1);

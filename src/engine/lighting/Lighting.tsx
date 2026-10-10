@@ -10,12 +10,14 @@
 import { useEffect, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three/webgpu";
-import { color, dot, float, normalView, positionViewDirection, smoothstep, uv } from "three/tsl";
+import { color, dot, float, normalView, positionViewDirection, positionWorld, smoothstep, uv } from "three/tsl";
 import { lighting } from "@/content/content";
 import { engine } from "@/engine/scroll/store";
 
 const HAND = new THREE.Vector3(0.45, -0.55, -0.2);
 const AIM_DEPTH = 18;
+const BEAM_LENGTH = 11;
+const BEAM_ANGLE = 0.2;
 
 export function Lighting() {
   const { spot, target, cone } = useMemo(() => {
@@ -25,8 +27,10 @@ export function Lighting() {
     spot.target = target;
 
     // Beam cone: apex at the light, opening toward the aim point.
-    const length = AIM_DEPTH;
-    const radius = Math.tan(c.angle) * length;
+    // The visible beam is narrower and shorter than the light it suggests,
+    // so it never slices through the road surface.
+    const length = BEAM_LENGTH;
+    const radius = Math.tan(BEAM_ANGLE) * length;
     const geometry = new THREE.ConeGeometry(radius, length, 40, 1, true);
     geometry.translate(0, -length / 2, 0);
     geometry.rotateX(-Math.PI / 2);
@@ -42,7 +46,8 @@ export function Lighting() {
     // beam is densest where the view looks through most of its volume).
     const facing = dot(normalView, positionViewDirection).abs().pow(2);
     const along = smoothstep(0, 0.9, uv().y).mul(float(1).sub(smoothstep(0.92, 1, uv().y)));
-    material.opacityNode = float(0.035).mul(along).mul(facing);
+    const aboveGround = smoothstep(0.1, 0.9, positionWorld.y);
+    material.opacityNode = float(0.035).mul(along).mul(facing).mul(aboveGround);
     const cone = new THREE.Mesh(geometry, material);
     cone.renderOrder = 4;
     return { spot, target, cone };
