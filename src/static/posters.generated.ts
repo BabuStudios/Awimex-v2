@@ -5,9 +5,29 @@ import type { SceneId } from "@/content/content";
 export type Poster = { src: string; width: number; height: number };
 
 export const posters: Record<SceneId, Poster | null> = {
-  hero: null,
-  omOss: null,
-  produkter: null,
-  verksamhet: null,
-  kontakt: null,
+  "hero": {
+    "src": "/posters/poster-hero.avif",
+    "width": 1600,
+    "height": 1000
+  },
+  "omOss": {
+    "src": "/posters/poster-om-oss.avif",
+    "width": 1600,
+    "height": 1000
+  },
+  "produkter": {
+    "src": "/posters/poster-produkter.avif",
+    "width": 1600,
+    "height": 1000
+  },
+  "verksamhet": {
+    "src": "/posters/poster-verksamhet.avif",
+    "width": 1600,
+    "height": 1000
+  },
+  "kontakt": {
+    "src": "/posters/poster-kontakt.avif",
+    "width": 1600,
+    "height": 1000
+  }
 };

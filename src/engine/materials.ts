@@ -70,8 +70,10 @@ export const asphaltMaterial = () =>
   once("asphalt", () => {
     const m = new THREE.MeshStandardNodeMaterial({ color: "#121519", metalness: 0.2 });
     const puddles = smoothstep(0.15, 0.55, mx_noise_float(positionWorld.xz.mul(0.18)));
-    m.roughnessNode = float(0.72).sub(puddles.mul(0.5));
-    m.colorNode = color("#121519").mul(float(1).sub(puddles.mul(0.35)));
+    // Subtle: with no environment to reflect, a very smooth/dark puddle reads
+    // as a hole in the road, so the sheen stays modest.
+    m.roughnessNode = float(0.72).sub(puddles.mul(0.24));
+    m.colorNode = color("#121519").mul(float(1).sub(puddles.mul(0.1)));
     return m;
   });
 

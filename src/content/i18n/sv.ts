@@ -28,7 +28,6 @@ export const sv = {
 
   intro: {
     loading: "Laddar",
-    skip: "Hoppa över intro",
   },
 
   nav: {

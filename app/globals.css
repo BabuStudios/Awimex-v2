@@ -20,6 +20,14 @@
   --scrim: linear-gradient(90deg, rgb(11 13 16 / 0.82) 0%, rgb(11 13 16 / 0.55) 45%, rgb(11 13 16 / 0) 75%);
 }
 
+/* Narrow screens: text spans the full width, so the scrim runs top-to-bottom
+   and stays dense enough for 4.5:1 over the brightest exhibit. */
+@media (max-width: 640px) {
+  :root {
+    --scrim: linear-gradient(180deg, rgb(11 13 16 / 0.55) 0%, rgb(11 13 16 / 0.82) 30%, rgb(11 13 16 / 0.82) 75%, rgb(11 13 16 / 0.6) 100%);
+  }
+}
+
 html {
   background: var(--color-asphalt);
   color: var(--color-offwhite);

@@ -8,9 +8,18 @@ import Lenis from "lenis";
 import { gsap, ScrollTrigger, registerMotion } from "@/lib/motion";
 import { setScroller } from "./handle";
 import { engine } from "./store";
-import { sample, sceneStartProgress } from "./timeline";
+import { TRACK_VH, sample, sceneStartProgress } from "./timeline";
 
 let lenis: Lenis | null = null;
+
+/**
+ * Pixel length of the camera journey. Progress is measured against the track
+ * only — the in-flow contact section after it scrolls normally and must not
+ * stretch the camera timeline.
+ */
+export function trackLength(): number {
+  return (TRACK_VH / 100) * window.innerHeight;
+}
 let tick: ((time: number) => void) | null = null;
 
 function publish(progress: number, velocity: number) {
@@ -39,7 +48,7 @@ export function startLenis(): Lenis {
   });
 
   lenis.on("scroll", (l: Lenis) => {
-    publish(l.progress || 0, l.velocity);
+    publish(Math.min(Math.max(l.scroll / trackLength(), 0), 1), l.velocity);
     ScrollTrigger.update();
   });
 
@@ -47,7 +56,7 @@ export function startLenis(): Lenis {
   gsap.ticker.add(tick);
   gsap.ticker.lagSmoothing(0);
 
-  publish(lenis.progress || 0, 0);
+  publish(Math.min(Math.max(lenis.scroll / trackLength(), 0), 1), 0);
   setScroller(lenis);
   return lenis;
 }
@@ -66,7 +75,7 @@ export function getLenis(): Lenis | null {
 
 /** Jump to a scene's first hold. `immediate` for reduced motion. */
 export function scrollToScene(index: number, immediate = false) {
-  const target = sceneStartProgress(index) * (lenis?.limit ?? document.documentElement.scrollHeight - innerHeight);
+  const target = sceneStartProgress(index) * trackLength();
   if (lenis) lenis.scrollTo(target, { immediate, duration: 1.6, easing: (t) => 1 - Math.pow(1 - t, 3) });
   else window.scrollTo({ top: target, behavior: immediate ? "auto" : "smooth" });
 }

@@ -19,12 +19,16 @@ import { Nav } from "@/overlay/Nav";
 import { SplitHeading } from "@/overlay/SplitHeading";
 import { posters } from "./posters.generated";
 
-/** CSS atmospheres — the documented fallback when a scene poster is missing. */
+/**
+ * CSS atmospheres — the documented fallback when a scene poster is missing.
+ * Image layers only: a bare colour is not a valid background-image layer and
+ * would invalidate the whole declaration (the base colour is set separately).
+ */
 const atmosphere: Record<SceneId, string> = {
   hero: heroAtmosphere,
   omOss: "radial-gradient(ellipse 80% 35% at 50% 85%, rgb(255 164 27 / 0.16), transparent 70%), linear-gradient(#0b0d10, #1a1e23 70%, #0b0d10)",
-  produkter: "radial-gradient(circle at 20% 60%, rgb(255 164 27 / 0.14), transparent 30%), radial-gradient(circle at 80% 40%, rgb(30 107 255 / 0.12), transparent 30%), #0b0d10",
-  verksamhet: "radial-gradient(ellipse 50% 40% at 25% 55%, rgb(30 107 255 / 0.2), transparent 70%), radial-gradient(ellipse 50% 40% at 78% 50%, rgb(255 164 27 / 0.18), transparent 70%), #0b0d10",
+  produkter: "radial-gradient(circle at 20% 60%, rgb(255 164 27 / 0.14), transparent 30%), radial-gradient(circle at 80% 40%, rgb(30 107 255 / 0.12), transparent 30%)",
+  verksamhet: "radial-gradient(ellipse 50% 40% at 25% 55%, rgb(30 107 255 / 0.2), transparent 70%), radial-gradient(ellipse 50% 40% at 78% 50%, rgb(255 164 27 / 0.18), transparent 70%)",
   kontakt: "linear-gradient(to top, rgb(255 164 27 / 0.22), rgb(159 180 200 / 0.08) 35%, #0b0d10 70%)",
 };
 
@@ -36,7 +40,10 @@ function SceneSection({ id, anchor, children }: { id: SceneId; anchor: string; c
         data-parallax
         aria-hidden="true"
         className="absolute -inset-y-6 inset-x-0 -z-10 bg-cover bg-center"
-        style={{ backgroundImage: poster ? `url(${poster.src}), ${atmosphere[id]}` : atmosphere[id] }}
+        style={{
+          backgroundColor: "var(--color-asphalt)",
+          backgroundImage: poster ? `url(${poster.src}), ${atmosphere[id]}` : atmosphere[id],
+        }}
       />
       <div aria-hidden="true" className="absolute inset-0 -z-10" style={{ background: "var(--scrim)" }} />
       <SceneFrame>{children}</SceneFrame>
