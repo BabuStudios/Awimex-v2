@@ -19,7 +19,6 @@ export const sv = {
 
   a11y: {
     skipToContent: "Hoppa till innehållet",
-    decorativeWorld: "Dekorativ 3D-miljö. Allt innehåll finns som text på sidan.",
     newTab: "öppnas i en ny flik",
     mainNav: "Huvudmeny",
     openMenu: "Öppna meny",
@@ -28,7 +27,11 @@ export const sv = {
 
   intro: {
     loading: "Laddar",
-    skip: "Hoppa över intro",
+  },
+
+  audio: {
+    on: "Slå på ljud",
+    off: "Stäng av ljud",
   },
 
   nav: {

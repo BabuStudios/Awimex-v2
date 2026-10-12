@@ -2,7 +2,9 @@
   "name": "awimex-web",
   "version": "0.1.0",
   "private": true,
-  "engines": { "node": ">=20.9" },
+  "engines": {
+    "node": ">=20.9"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "wordmark": "node scripts/build-wordmark.mjs",
     "posters": "node scripts/capture-posters.mjs",
-    "verify": "node scripts/verify.mjs"
+    "verify": "node scripts/verify.mjs",
+    "verify:runtime": "node scripts/verify-runtime.mjs"
   },
   "dependencies": {
     "@gsap/react": "2.1.2",
