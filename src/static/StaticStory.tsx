@@ -35,7 +35,7 @@ const atmosphere: Record<SceneId, string> = {
 function SceneSection({ id, anchor, children }: { id: SceneId; anchor: string; children: React.ReactNode }) {
   const poster = posters[id];
   return (
-    <section id={anchor} className="relative isolate overflow-hidden" data-static-scene>
+    <section data-anchor={anchor} className="relative isolate overflow-hidden" data-static-scene>
       <div
         data-parallax
         aria-hidden="true"

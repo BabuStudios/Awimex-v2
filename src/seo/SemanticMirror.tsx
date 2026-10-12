@@ -11,6 +11,8 @@ import { externalLinks } from "@/content/content";
  * decorative (aria-hidden); crawlers and screen readers read this.
  * Links are tabIndex -1 so sighted keyboard users never land on invisible
  * focus — they use the visible nav and CTAs; screen readers still follow them.
+ * Section ids are the scene anchors (#om-oss …), so hash links resolve in the
+ * server HTML of every tier; the visible layers scroll there in JS.
  */
 export function SemanticMirror({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const s = dict.scenes;
@@ -18,7 +20,7 @@ export function SemanticMirror({ locale, dict }: { locale: Locale; dict: Diction
 
   return (
     <main id="innehall" className="sr-only">
-      <section id={`mirror-${hero.anchor}`} aria-labelledby="m-hero">
+      <section id={hero.anchor} aria-labelledby="m-hero">
         <p>{s.hero.eyebrow}</p>
         <h1 id="m-hero">{s.hero.heading}</h1>
         <p>{t(s.hero.subhead, locale)}</p>
@@ -27,7 +29,7 @@ export function SemanticMirror({ locale, dict }: { locale: Locale; dict: Diction
         </a>
       </section>
 
-      <section id={`mirror-${omOss.anchor}`} aria-labelledby="m-om">
+      <section id={omOss.anchor} aria-labelledby="m-om">
         <p>{s.omOss.eyebrow}</p>
         <h2 id="m-om">{s.omOss.heading}</h2>
         <p>{t(s.omOss.lead, locale)}</p>
@@ -48,7 +50,7 @@ export function SemanticMirror({ locale, dict }: { locale: Locale; dict: Diction
         </dl>
       </section>
 
-      <section id={`mirror-${produkter.anchor}`} aria-labelledby="m-produkter">
+      <section id={produkter.anchor} aria-labelledby="m-produkter">
         <p>{s.produkter.eyebrow}</p>
         <h2 id="m-produkter">{s.produkter.heading}</h2>
         <p>{s.produkter.lead}</p>
@@ -61,7 +63,7 @@ export function SemanticMirror({ locale, dict }: { locale: Locale; dict: Diction
         <p>{s.produkter.more}</p>
       </section>
 
-      <section id={`mirror-${verksamhet.anchor}`} aria-labelledby="m-verksamhet">
+      <section id={verksamhet.anchor} aria-labelledby="m-verksamhet">
         <p>{s.verksamhet.eyebrow}</p>
         <h2 id="m-verksamhet">{s.verksamhet.heading}</h2>
         <p>{s.verksamhet.lead}</p>
@@ -73,7 +75,7 @@ export function SemanticMirror({ locale, dict }: { locale: Locale; dict: Diction
         ))}
       </section>
 
-      <section id={`mirror-${kontakt.anchor}`} aria-labelledby="m-kontakt">
+      <section id={kontakt.anchor} aria-labelledby="m-kontakt">
         <p>{s.kontakt.eyebrow}</p>
         <h2 id="m-kontakt">{s.kontakt.heading}</h2>
         <p>{t(s.kontakt.lead, locale)}</p>

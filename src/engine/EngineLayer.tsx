@@ -16,6 +16,7 @@ import { engine, useEngine } from "@/engine/scroll/store";
 import { startLenis, stopLenis, scrollToScene } from "@/engine/scroll/lenis";
 import { TRACK_VH } from "@/engine/scroll/timeline";
 import { track } from "@/lib/analytics";
+import { AudioManager } from "./audio/AudioManager";
 import { ContactSection } from "@/overlay/ContactSection";
 import { Intro } from "@/overlay/Intro";
 import { Nav } from "@/overlay/Nav";
@@ -30,6 +31,8 @@ export default function EngineLayer() {
   const scene = useEngine((s) => s.scene);
   const introDone = useEngine((s) => s.introDone);
   const worldReady = useEngine((s) => s.worldReady);
+  const activeBackend = useEngine((s) => s.activeBackend);
+  const tier = useEngine((s) => s.tier);
   const [capture, setCapture] = useState(false);
 
   useEffect(() => {
@@ -74,8 +77,12 @@ export default function EngineLayer() {
     <>
       {profile && (
         <div
+          data-backend={activeBackend ?? undefined}
+          data-tier={tier ?? undefined}
           className="fixed inset-0 z-0 transition-opacity duration-[1400ms]"
-          style={{ opacity: worldReady && introDone ? 1 : 0 }}
+          // introDone covers the 4 s cap: past it, the world fades in at its
+          // current quality even if shaders are still compiling (spec 4.5).
+          style={{ opacity: introDone ? 1 : 0 }}
         >
           <Canvas3D profile={profile} />
         </div>
@@ -86,6 +93,7 @@ export default function EngineLayer() {
           <Intro />
           <Nav onNavigate={(i) => scrollToScene(i)} activeScene={scene} />
           <Overlay />
+          <AudioManager />
         </>
       )}
 

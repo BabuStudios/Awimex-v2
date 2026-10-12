@@ -130,6 +130,6 @@ export const intro = {
 
 /* ── Audio ───────────────────────────────────────────────────────────── */
 export const audio = {
-  enabled: false,
+  enabled: false as boolean,
   ambientSrc: null as string | null,
-} as const;
+};

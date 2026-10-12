@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { scenes } from "@/content/scenes";
+import { prefersReducedMotion } from "@/lib/motion-preference";
 import { useI18n } from "@/lib/i18n-context";
 import { BliKundButton } from "./BliKundButton";
 import { Wordmark } from "./Wordmark";
@@ -9,18 +10,21 @@ import { Wordmark } from "./Wordmark";
 /**
  * Persistent navigation with the primary action reachable from every scene.
  * `onNavigate` lets the 3D experience translate a scene into a camera jump;
- * the static story passes nothing and the anchors scroll natively.
+ * otherwise the link scrolls to the static story's matching section.
  */
 export function Nav({ onNavigate, activeScene }: { onNavigate?: (index: number) => void; activeScene?: number }) {
   const { dict } = useI18n();
   const [menuOpen, setMenuOpen] = useState(false);
   const links = scenes.slice(1);
 
+  // Hash targets are the semantic mirror's sections (they exist in every
+  // tier's HTML); with JS we move the visible layer instead.
   const go = (index: number) => (e: React.MouseEvent) => {
     setMenuOpen(false);
-    if (!onNavigate) return;
     e.preventDefault();
-    onNavigate(index);
+    if (onNavigate) return onNavigate(index);
+    const section = document.querySelector(`[data-anchor="${scenes[index]!.anchor}"]`);
+    section?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth" });
   };
 
   return (
